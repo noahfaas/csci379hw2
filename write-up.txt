@@ -1,0 +1,32 @@
+Task 4:
+In the first couple moves the AI seemed to favor going into the first column if available and want to choose
+the minimum numbered column it could. This is likely because there was no end game in sight (within a depth of 5),
+so it effectively had no strategy at all. This changed once I had 3 in a row and it could detect that I was close to
+a win, and there it blocked me. But then after that, it would go back to playing in the minimum column possible.
+I realized that to win, I would need to clump a bunch of Os together undetectably, and then go on the offensive by
+going for 4 in a row once I had enough clumped together. By this point, it was too late for the AI and it couldn't
+put up a strong enough defense, so I won. I was taking advantage here of the AI's limited visibility into the future
+via its max depth.
+
+Task 5:
+The heuristic I created is meant to guide the AI specifically towards a horizontal four in a row. I made it strategize
+to try to clump is Os into a fewer number of distinct rows and to prevent X from horizontal four in a rows by preventing
+X from doing this same thing. I did so by counting the number of Xs and Os in each row, and the total heuristic I returned
+is an exponential (base 2) of the amount of Os in the row minus an exponential (base 2 again) of the amount of Xs in a row.
+Then, I sum these exponential differences to total the heuristic. The drawback is that this only focuses on horizontal
+four in a row strategy, but I do think it does so quite well. I've already noticed fairly significant improvement in the
+AI agent's play.
+
+Questions:
+If there is a 1 in 4 chance that the min player will have to make a random decision, and assuming that leaves each of
+their options equally likely in the case of randomness, then we will first need to calculate the expected values of
+the min player's choices. If the max player chooses the first option, the min player will choose -8 3/4 of the time and
+12 1/4 of the time, so the expected value is (-8*3/4)+(12*1/4)=-3. For the max player's second option, the expected value
+is (3*3/4)+(4*1/4)=3.25. For the max player's third option, the expected value is (6*1/4)+(3*3/4)=3.75. The max player
+should take the maximum expected value, which is the third option of 3.75. Using expected values is helpful here
+because it allows the players to make the best decision on average at each decision point, even amidst uncertainty.
+Minimax would either choose the second or third option. It would be indifferent to each one, but would likely go for
+the second option simply because it is ordered first. Minimax does not consider randomness and just takes the min
+and max values as they are. The minimax algorithm could account for this by, at each decision point depending on which
+player is acting, taking the minimum or maximum of expected values of that players valid plays rather than looking at
+values themselves as the raw values are less reliable and informative when randomness is introduced.
